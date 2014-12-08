@@ -1,0 +1,143 @@
+buildscript {
+    repositories {
+			 jcenter()
+		}
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:1.12.+'
+				classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.5'
+    }
+}
+
+//apply plugin: 'application'
+apply plugin: 'provided-base'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+//version = '0.1.0'
+//group = 'net.alchim31.jme3'
+//description = 'A library to host various jme functions, helpers, ...'
+
+repositories {
+mavenLocal()
+	mavenCentral()
+	maven { url "http://updates.jmonkeyengine.org/maven/"}
+	maven { url "http://dl.bintray.com/jmonkeyengine/contrib" }
+}
+
+//def v_jme = '3.0.10' //'3.1.0-snapshot-github'
+//def v_slf4j = '1.7.7'
+
+dependencies {
+	compile "com.jme3:jme3-core:${v_jme}"
+	compile "org.slf4j:slf4j-api:${v_slf4j}"
+	compile "org.slf4j:jul-to-slf4j:${v_slf4j}"
+	provided 'org.projectlombok:lombok:1.14.2'
+	provided 'com.jme3x:jfx:1.+'
+	provided 'com.squareup.dagger:dagger:1.2.2'
+	provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+	provided 'com.netflix.rxjava:rxjava-core:0.19.2'
+
+	// runtime "com.jme3:jme3-lwjgl:${v_jme}"
+	// runtime("com.jme3:jme3-desktop:${v_jme}"){
+	// 	exclude module: "jinput"
+	// }
+	// runtime 'net.java.jinput:jinput:2.0.6'
+	// runtime "com.jme3:jme3-jogg:${v_jme}"
+	// runtime 'ch.qos.logback:logback-classic:1.1.2'
+
+	testCompile 'junit:junit:4.11'
+	testCompile 'org.mockito:mockito-core:1.8.5'
+}
+
+//------------------------------------------------------------------------------
+
+task copyDeps(type: Copy) {
+	description 'copy runtime + testRuntime dependencies into lib/ dir to allow other tools (jme3-SDK, eclipse apt-processor) to use libs'
+	from (configurations.runtime + configurations.testCompile)
+	into 'lib'
+}
+
+//------------------------------------------------------------------------------
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+task sourcesJar(type: Jar) {
+	from sourceSets.main.allSource
+	classifier = 'sources'
+}
+
+task mainJar(type: Jar) {
+	from sourceSets.main.output
+	exclude 'Textures/**'
+}
+task texturesJar(type: Jar) {
+	from sourceSets.main.output
+	include 'Textures/**'
+	classifier = 'textures'
+}
+	//jar.dependsOn sourcesJar
+
+def pomConfig = {
+	licenses {
+		license {
+			name "Public domain (CC0-1.0)"
+			url "http://creativecommons.org/publicdomain/zero/1.0/"
+			distribution "repo"
+		}
+	}
+	developers {
+		developer {
+			id "davidB"
+			name "David Bernard"
+		}
+	}
+}
+
+publishing {
+	publications {
+		mavenStuff(MavenPublication) {
+			//from components.java
+			artifact mainJar
+			artifact sourcesJar
+			artifact texturesJar
+			pom.withXml {
+				def root = asNode()
+				if (description) root.appendNode('description', project.description)
+				root.children().last() + pomConfig
+			}
+		}
+	}
+}
+
+bintray {
+	user = bintray_user
+	key = bintray_api_key
+
+	publications = ['mavenStuff'] //When uploading Maven-based publication files
+	//dryRun = false //Whether to run this as dry-run, without deploying
+	publish = true //If version should be auto published after an upload
+	pkg {
+		repo = 'jme3stuff'
+		name = project.name
+		desc = project.description
+		websiteUrl = "https://github.com/davidB/${rootProject.name}"
+		issueTrackerUrl = "https://github.com/davidB/${rootProject.name}/issues"
+		vcsUrl = "https://github.com/davidB/${rootProject.name}.git"
+		licenses = ['CC0-1.0']
+		labels = ['jme3']
+		publicDownloadNumbers = true
+		version {
+			name = project.version
+			vcsTag = project.version
+			//attributes = []
+			//gpg {
+			//	sign = true //Determines whether to GPG sign the files. The default is false
+			//	passphrase = 'optional, the passphrase for GPG signing'
+			//}
+		}
+	}
+}

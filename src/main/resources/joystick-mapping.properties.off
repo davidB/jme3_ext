@@ -1,0 +1,17 @@
+# Wired XBOX 360 controller (Linux)
+Microsoft\ X-Box\ 360\ pad.A=3
+Microsoft\ X-Box\ 360\ pad.B=1
+Microsoft\ X-Box\ 360\ pad.X=0
+Microsoft\ X-Box\ 360\ pad.Y=2
+Microsoft\ X-Box\ 360\ pad.Left\ Thumb=4
+Microsoft\ X-Box\ 360\ pad.Right\ Thumb=5
+Microsoft\ X-Box\ 360\ pad.Left\ Thumb\ 3=10
+Microsoft\ X-Box\ 360\ pad.Right\ Thumb\ 3=11
+Microsoft\ X-Box\ 360\ pad.Select=8
+# start button is not available, so use the mode button as start button
+Microsoft\ X-Box\ 360\ pad.Mode=9
+Microsoft\ X-Box\ 360\ pad.rx=z
+Microsoft\ X-Box\ 360\ pad.ry=rz
+# requires custom code to support trigger buttons
+Microsoft\ X-Box\ 360\ pad.z=LeftTrigger
+Microsoft\ X-Box\ 360\ pad.rz=RightTrigger
