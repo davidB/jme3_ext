@@ -1,11 +1,11 @@
 buildscript {
-    repositories {
-			 jcenter()
-		}
-    dependencies {
-        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:1.12.+'
-				classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.5'
-    }
+	repositories {
+	 jcenter()
+	}
+	dependencies {
+		classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:1.12.+'
+		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.5'
+	}
 }
 
 //apply plugin: 'application'
@@ -22,8 +22,8 @@ targetCompatibility = '1.8'
 //description = 'A library to host various jme functions, helpers, ...'
 
 repositories {
-mavenLocal()
-	mavenCentral()
+	mavenLocal()
+	jcenter()
 	maven { url "http://updates.jmonkeyengine.org/maven/"}
 	maven { url "http://dl.bintray.com/jmonkeyengine/contrib" }
 }
