@@ -95,6 +95,10 @@ public class SetupHelpers {
 	}
 
 	static public void dumpJoysticks( Joystick[] joysticks, PrintWriter out ) {
+		if (joysticks == null || joysticks.length == 0) {
+			out.println("disable or empty");
+			return;
+		}
 		for( Joystick j : joysticks ) {
 			out.println( "Joystick[" + j.getJoyId() + "]:" + j.getName() );
 			out.println( "  buttons:" + j.getButtonCount() );
