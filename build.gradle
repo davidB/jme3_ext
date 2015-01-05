@@ -8,7 +8,6 @@ buildscript {
 	}
 }
 
-//apply plugin: 'application'
 apply plugin: 'provided-base'
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -17,19 +16,12 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-//version = '0.1.0'
-//group = 'net.alchim31.jme3'
-//description = 'A library to host various jme functions, helpers, ...'
-
 repositories {
 	mavenLocal()
 	jcenter()
 	maven { url "http://updates.jmonkeyengine.org/maven/"}
 	maven { url "http://dl.bintray.com/jmonkeyengine/contrib" }
 }
-
-//def v_jme = '3.0.10' //'3.1.0-snapshot-github'
-//def v_slf4j = '1.7.7'
 
 dependencies {
 	compile "com.jme3:jme3-core:${v_jme}"
@@ -55,10 +47,16 @@ dependencies {
 
 //------------------------------------------------------------------------------
 
-task copyDeps(type: Copy) {
+task copyDeps {
 	description 'copy runtime + testRuntime dependencies into lib/ dir to allow other tools (jme3-SDK, eclipse apt-processor) to use libs'
-	from (configurations.runtime + configurations.testCompile)
-	into 'lib'
+  copy {
+    from configurations.runtime
+    into 'lib/main'
+  }
+  copy {
+    from (configurations.testRuntime - configurations.runtime)
+    into 'lib/test'
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -74,12 +72,12 @@ task mainJar(type: Jar) {
 	from sourceSets.main.output
 	exclude 'Textures/**'
 }
+
 task texturesJar(type: Jar) {
 	from sourceSets.main.output
 	include 'Textures/**'
 	classifier = 'textures'
 }
-	//jar.dependsOn sourcesJar
 
 def pomConfig = {
 	licenses {
@@ -133,11 +131,6 @@ bintray {
 		version {
 			name = project.version
 			vcsTag = project.version
-			//attributes = []
-			//gpg {
-			//	sign = true //Determines whether to GPG sign the files. The default is false
-			//	passphrase = 'optional, the passphrase for GPG signing'
-			//}
 		}
 	}
 }
