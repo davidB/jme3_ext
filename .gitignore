@@ -17,6 +17,7 @@ build
 .settings
 .apt_generated
 .factorypath
+xtend-gen
 
 # crash
 hs_err_pid*.log
