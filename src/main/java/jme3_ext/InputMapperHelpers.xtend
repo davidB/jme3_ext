@@ -30,22 +30,17 @@ class InputMapperHelpers {
     def static int defaultInputEventHash(InputEvent evt) {
         // pseudo-pattern matching
         if (evt instanceof JoyAxisEvent) {
-            var JoyAxisEvent e = evt as JoyAxisEvent
-            return 1000 + e.getJoyIndex() * 100 + e.getAxisIndex()
+            return 1000 + evt.getJoyIndex() * 100 + evt.getAxisIndex()
         } else if (evt instanceof MouseMotionEvent) {
             return 2000
         } else if (evt instanceof JoyButtonEvent) {
-            var JoyButtonEvent e = evt as JoyButtonEvent
-            return 3000 + e.getJoyIndex() * 100 + e.getButtonIndex()
+            return 3000 + evt.getJoyIndex() * 100 + evt.getButtonIndex()
         } else if (evt instanceof MouseButtonEvent) {
-            var MouseButtonEvent e = evt as MouseButtonEvent
-            return 4000 + e.getButtonIndex()
+            return 4000 + evt.getButtonIndex()
         } else if (evt instanceof KeyInputEvent) {
-            var KeyInputEvent e = evt as KeyInputEvent
-            return 5000 + e.getKeyCode()
+            return 5000 + evt.getKeyCode()
         } else if (evt instanceof TouchEvent) {
-            var TouchEvent e = evt as TouchEvent
-            return 6000 + e.getPointerId() * 100 + e.getType().ordinal()
+            return 6000 + evt.getPointerId() * 100 + evt.getType().ordinal()
         }
         return 0 // evt.hashCode();
     }
@@ -139,15 +134,13 @@ class InputMapperHelpers {
         if(evt === null) return "null"
         var String v = if(timePrefix) '''«evt.getTime()» '''.toString else ""
         if (evt instanceof JoyAxisEvent) {
-            var JoyAxisEvent e = evt as JoyAxisEvent
             return v +
-                String::format("JoyAxisEvent(joystickIndex : %s , axis: %s / %s, value : %s )", e.getJoyIndex(),
-                    e.getAxis().getName(), e.getAxisIndex(), e.getValue())
+                String::format("JoyAxisEvent(joystickIndex : %s , axis: %s / %s, value : %s )",
+                    evt.getJoyIndex(), evt.getAxis().getName(), evt.getAxisIndex(), evt.getValue())
         } else if (evt instanceof JoyButtonEvent) {
-            var JoyButtonEvent e = evt as JoyButtonEvent
             return v +
-                String::format("JoyButtonEvent(joystickIndex : %s , btn: %s / %s, value : %S)", e.getJoyIndex(),
-                    e.getButton().getName(), e.getButtonIndex(), e.isPressed())
+                String::format("JoyButtonEvent(joystickIndex : %s , btn: %s / %s, value : %S)",
+                    evt.getJoyIndex(), evt.getButton().getName(), evt.getButtonIndex(), evt.isPressed())
         }
         return v + evt.toString()
     }

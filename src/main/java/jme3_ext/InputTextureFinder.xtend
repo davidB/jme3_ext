@@ -319,9 +319,14 @@ class InputTextureFinder {
 	//TODO manage TouchEvent
 	//TODO send url of a default (unknown texture)
 	def private String findPath0(InputEvent evt) {
-		var String path=if ((evt instanceof JoyButtonEvent)) find(evt as JoyButtonEvent) else if ((evt instanceof JoyAxisEvent)) find(evt as JoyAxisEvent) else if ((evt instanceof KeyInputEvent)) find(evt as KeyInputEvent) else if ((evt instanceof MouseButtonEvent)) find(evt as MouseButtonEvent) else if ((evt instanceof MouseMotionEvent)) find(evt as MouseMotionEvent) else null      
-		return path 
+		if ((evt instanceof JoyButtonEvent)) find(evt)
+		else if ((evt instanceof JoyAxisEvent)) find(evt)
+		else if ((evt instanceof KeyInputEvent)) find(evt)
+		else if ((evt instanceof MouseButtonEvent)) find(evt)
+		else if ((evt instanceof MouseMotionEvent)) find(evt)
+		else null      
 	}
+
 	def String findPath(InputEvent evt) {
 		var String path=findPath0(evt) 
 		var URL url=if ((path !== null)) Thread.currentThread().getContextClassLoader().getResource(path) else null  

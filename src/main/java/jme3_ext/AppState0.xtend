@@ -1,7 +1,6 @@
 /// License [CC0](http://creativecommons.org/publicdomain/zero/1.0/)
 package jme3_ext
 
-import lombok.extern.slf4j.Slf4j
 import com.jme3.app.Application
 import com.jme3.app.SimpleApplication
 import com.jme3.app.state.AbstractAppState
@@ -10,7 +9,7 @@ import com.jme3.app.state.AppStateManager
 /** 
  * @author david.bernard
  */
-@Slf4j abstract class AppState0 extends AbstractAppState {
+abstract class AppState0 extends AbstractAppState {
     package org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AppState0)
     protected SimpleApplication app
 
