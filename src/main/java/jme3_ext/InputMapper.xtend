@@ -34,24 +34,28 @@ final class InputMapper {
 
         // the function is place as member of Entry to simplify type notation and checking
         // harder in other places due to collection of mixed Entry for several types of InputEvent and R
-        @SuppressWarnings("unchecked") def void apply(InputEvent e) {
-            dest.onNext(extract.apply(e as E))
+        @SuppressWarnings("unchecked")
+        def void apply(InputEvent e) {
+            dest.onNext(
+                extract.apply(e as E)
+            )
         }
-
     }
+
     /** 
      * mappings of all rules, the key is the result of inputEventHasher.apply(Mapping.template)
      * Using a map avoid comparison with all rules to search Mapping by InputEvent.
      * Using public field allow user to explore, to edit the map as he like
      * (eg: to search template by Observer to expose controls, see InputMapperHelpers.findTemplatesOf()).
      */
-
     public final Map<Integer, Mapping<? extends InputEvent, ? extends Object>> mappings = new TreeMap()
+
     /** 
      * Convert an InputEvent into an Integer.
      * Used to compare two InputEvent (the template and the incoming)
      */
     public final Function<InputEvent, Integer> inputEventHasher
+    
     final PublishSubject<InputEvent> last0 = PublishSubject::create()
     /** 
      * Stream the last InputEvent send via onEvent (ignore mappings' content).
@@ -70,6 +74,10 @@ final class InputMapper {
     @Inject
     @FinalFieldsConstructor
     new() {}
+
+    new(){
+        this([evt|InputMapperHelpers.defaultInputEventHash(evt)])
+    }
 
     /** 
      * Store the mapping rules : template -- extract --> dest.
