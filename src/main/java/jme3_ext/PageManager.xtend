@@ -3,44 +3,46 @@ package jme3_ext
 
 import com.jme3.app.state.AppState
 import com.jme3.app.state.AppStateManager
+import java.util.TreeMap
+import java.util.Stack
 
-class PageManager {
+class PageManager<P> {
     final AppStateManager stateManager
-    final AppState[] pages
-    int current = -1
+    
+    public val pages = new TreeMap<P, AppState>()
+    public val flow = new Stack<P>()
 
-    new(AppStateManager stateManager, AppState[] pages) {
+    new(AppStateManager stateManager) {
         this.stateManager = stateManager
-        this.pages = pages
     }
-
-    def void goTo(int p) {
-        if (p === current) {
+    
+    def void back(P p) {
+        flow.pop
+        show(flow.peek)
+    }
+    
+    def void goTo(P p) {
+        if (p === flow.peek) {
             return;
         }
-        hide(current)
-        current = p
-        show(current)
-    }
-
-    def void show(int p) {
-        if (p < 0 || p >= pages.length) {
-            return;
+        if (pages.containsKey(p)) {
+            hide(flow.pop)
+            flow.push(p)
+            show(p)
         }
-        stateManager.attach({
-            val _rdIndx_pages = p
-            pages.get(_rdIndx_pages)
-        })
     }
 
-    def void hide(int p) {
-        if (p < 0 || p >= pages.length) {
-            return;
+    def void show(P p) {
+        val page = pages.get(p)
+        if (page !== null) {
+            stateManager.attach(page)
         }
-        stateManager.detach({
-            val _rdIndx_pages = p
-            pages.get(_rdIndx_pages)
-        })
     }
 
+    def void hide(P p) {
+        val page = pages.get(p)
+        if (page !== null) {
+            stateManager.detach(page)
+        }
+    }
 }
