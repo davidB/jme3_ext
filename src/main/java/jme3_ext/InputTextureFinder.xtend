@@ -10,12 +10,15 @@ import com.jme3.input.event.KeyInputEvent
 import com.jme3.input.event.MouseButtonEvent
 import com.jme3.input.event.MouseMotionEvent
 import java.net.URL
+import javax.inject.Inject
 
 class InputTextureFinder {
 	public String base="Textures/Inputs"
 	public String folderKeyInputEvent="Keyboard & Mouse"
 	public String theme="Black"
 
+    @Inject
+    new(){}
 	/** 
 	 * @TODO complete missing conversion, texture,...
 	 * @TODO provide alternative for LSHIFT/RSHIFT, LCONTROL/RCONTROL, DIVIDE/SLASH,...
