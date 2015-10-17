@@ -37,8 +37,10 @@ import dagger.Provides
 
     @Provides @Singleton def GuiManager guiManager(SimpleApplication app, ICursorDisplayProvider c) {
         try {
-            return app.enqueue(null). // guiManager modify app.guiNode so it should run in JME Thread
-            get()
+			//guiManager modify app.guiNode so it should run in JME Thread
+			val guiManager = new GuiManager(app.getGuiNode(), app.getAssetManager(), app, true, c);
+			app.inputManager.addRawInputListener(guiManager.inputRedirector)
+			guiManager
         } catch (RuntimeException e) {
             throw e
         } catch (Exception e) {
