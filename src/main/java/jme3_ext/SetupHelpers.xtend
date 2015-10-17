@@ -55,15 +55,17 @@ class SetupHelpers {
     }
 
     static def logJoystickInfo(InputManager inputManager) {
-        var File f = new File("log/joysticks.txt")
-        f.getParentFile().mkdirs()
-        val out = new PrintWriter(new FileWriter(f))
-        try {
-            dumpJoysticks(inputManager.getJoysticks(), out)
-        } catch (Exception e) {
-            throw new RuntimeException("Error writing joystick dump", e)
-        } finally {
-            if (out != null) out.close()
+    	if (inputManager != null) {
+	        var File f = new File("log/joysticks.txt")
+	        f.getParentFile().mkdirs()
+	        val out = new PrintWriter(new FileWriter(f))
+	        try {
+	            dumpJoysticks(inputManager.getJoysticks(), out)
+	        } catch (Exception e) {
+	            throw new RuntimeException("Error writing joystick dump", e)
+	        } finally {
+	            if (out != null) out.close()
+	        }
         }
     }
 
