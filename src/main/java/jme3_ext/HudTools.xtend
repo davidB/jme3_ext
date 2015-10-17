@@ -11,6 +11,7 @@ import com.jme3x.jfx.AbstractHud
 import com.jme3x.jfx.FXMLUtils
 import com.jme3x.jfx.GuiManager
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import com.jme3.renderer.ViewPort
 
 @Singleton
 class HudTools {
@@ -57,4 +58,23 @@ class HudTools {
         }
 
     }
+
+    def void scaleToFit(Hud<?> hud, ViewPort vp) {
+		val cam = vp.getCamera()
+		val cw = cam.getWidth()
+		val pw = hud.region.prefWidth(cw)
+		//double pw = hud.region.widthProperty().doubleValue();
+		val rw = cw/pw
+		val tw = (cw-pw) *0.5 * rw
+		hud.region.scaleXProperty().set(rw)
+		hud.region.translateXProperty().set(tw)
+
+		val ch = cam.getHeight()
+		val ph = hud.region.prefHeight(ch)
+		//double ph = hud.region.widthProperty().doubleValue();
+		val rh = ch/ph
+		val th = (ch-ph) *0.5 * rh
+		hud.region.scaleYProperty().set(rh)
+		hud.region.translateYProperty().set(th)
+	}
 }
