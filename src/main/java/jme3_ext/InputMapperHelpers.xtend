@@ -109,7 +109,10 @@ class InputMapperHelpers {
     }
 
     def static Collection<InputEvent> findTemplatesOf(InputMapper inputMapper, Observer<?> dest) {
-        return inputMapper.mappings.entrySet().stream().filter(null).map(null).collect(Collectors::toList())
+        return inputMapper.mappings.entrySet()
+        .filter[v| dest.equals(v.value.dest)]
+        .map[v| v.value.template]
+        .toList
     }
 
     def static void mapKey(InputMapper m, int keyCode, Observer<Float> dest, boolean asOne) {
