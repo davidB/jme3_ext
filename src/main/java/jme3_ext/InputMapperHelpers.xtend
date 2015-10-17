@@ -1,14 +1,6 @@
 /// License [CC0](http://creativecommons.org/publicdomain/zero/1.0/)
 package jme3_ext
 
-import java.awt.im.InputContext
-import java.util.Collection
-import java.util.Deque
-import java.util.Locale
-import java.util.stream.Collectors
-import rx.Observable
-import rx.Observer
-import rx.Subscription
 import com.jme3.input.JoystickAxis
 import com.jme3.input.JoystickButton
 import com.jme3.input.event.InputEvent
@@ -18,6 +10,13 @@ import com.jme3.input.event.KeyInputEvent
 import com.jme3.input.event.MouseButtonEvent
 import com.jme3.input.event.MouseMotionEvent
 import com.jme3.input.event.TouchEvent
+import java.awt.im.InputContext
+import java.util.Collection
+import java.util.Deque
+import java.util.Locale
+import rx.Observable
+import rx.Observer
+import rx.Subscription
 
 /** 
  * A collection of functions, mainly to simplify usage of InputMapper.
