@@ -34,10 +34,10 @@ import org.eclipse.xtend.lib.annotations.Data
     // to avoid change existing node volume and to avoid new AudioNode ask "what is the volume"
     // we adjust listener volume so that sound could stay to 1.0
     def void applyVolumes() {
-        var float factor1 = Math::max(0.01f, soundVolume.floatValue())
-        app.getListener().setVolume(masterVolume.floatValue() * factor1)
-        val volume = musicVolume.floatValue() / factor1
         app.enqueue[
+	        val factor1 = Math::max(0.01f, soundVolume.floatValue())
+	        app.getListener().setVolume(masterVolume.floatValue() * factor1)
+	        val volume = musicVolume.floatValue() / factor1
             musics.forEach[m| m.volume = volume]
             true
         ]
