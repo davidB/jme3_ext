@@ -17,16 +17,20 @@ class PageManager<P> {
     }
     
     def void back(P p) {
-        flow.pop
-        show(flow.peek)
+    	if(!flow.isEmpty) { 
+	        flow.pop
+	        show(flow.peek)
+        }
     }
     
     def void goTo(P p) {
-        if (p === flow.peek) {
+        if (!flow.isEmpty && p === flow.peek) {
             return;
         }
         if (pages.containsKey(p)) {
-            hide(flow.pop)
+        	if(!flow.isEmpty) {
+            	hide(flow.peek)
+           	}
             flow.push(p)
             show(p)
         }
