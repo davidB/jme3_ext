@@ -17,6 +17,7 @@ import java.util.Locale
 import rx.Observable
 import rx.Observer
 import rx.Subscription
+import java.util.function.Function
 
 /** 
  * A collection of functions, mainly to simplify usage of InputMapper.
@@ -82,30 +83,30 @@ class InputMapperHelpers {
     /** 
      * Convert KeyInputEvent into true when isPressed() else false.
      */
-    def static boolean isPressed(KeyInputEvent evt) {
-        return evt.isPressed()
-    }
+    public static val isPressed = [KeyInputEvent evt|
+        evt.isPressed()
+    ]
 
     /** 
      * Convert KeyInputEvent into 1.0f when isPressed() else 0.0f.
      */
-    def static float isPressedAsOne(KeyInputEvent evt) {
-        return if(evt.isPressed()) 1.0f else 0.0f
-    }
+    public static val isPressedAsOne = [KeyInputEvent evt|
+        if(evt.isPressed()) 1.0f else 0.0f
+    ]
 
     /** 
      * Convert KeyInputEvent into -1.0f when isPressed() else 0.0f.
      */
-    def static float isPressedAsNegOne(KeyInputEvent evt) {
-        return if(evt.isPressed()) -1.0f else 0.0f
-    }
+    public static val isPressedAsNegOne = [KeyInputEvent evt|
+        if(evt.isPressed()) -1.0f else 0.0f
+    ]
 
     /** 
      * Convert KeyInputEvent into -1.0f when isPressed(), -0.5f when isRepeating, else 0.0f.
      */
-    def static float isPressedNegOneAndHalf(KeyInputEvent evt) {
-        return if(evt.isPressed()) -1.0f else if(evt.isRepeating()) -0.5f else 0.0f
-    }
+    static val isPressedNegOneAndHalf = [KeyInputEvent evt|
+        if(evt.isPressed()) -1.0f else if(evt.isRepeating()) -0.5f else 0.0f
+    ]
 
     def static Collection<InputEvent> findTemplatesOf(InputMapper inputMapper, Observer<?> dest) {
         return inputMapper.mappings.entrySet()
@@ -115,11 +116,11 @@ class InputMapperHelpers {
     }
 
     def static void mapKey(InputMapper m, int keyCode, Observer<Float> dest, boolean asOne) {
-        m.map(tmplKeyInputEvent(keyCode), if(asOne) null else null, dest)
+        m.map(tmplKeyInputEvent(keyCode), if(asOne) isPressedAsOne else isPressedAsNegOne, dest)
     }
 
     def static void mapKey(InputMapper m, int keyCode, Observer<Boolean> dest) {
-        m.map(tmplKeyInputEvent(keyCode), null, dest)
+        m.map(tmplKeyInputEvent(keyCode), InputMapperHelpers.isPressed, dest)
     }
 
     def static <T> Subscription latest(Observable<T> src, Deque<T> latest, int capacity) {

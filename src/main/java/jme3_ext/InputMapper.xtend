@@ -88,6 +88,9 @@ final class InputMapper {
      * @param dest the destination.
      */
     def <E extends InputEvent, R> void map(E template, Function<E, R> extract, Observer<R> dest) {
+    	if (template == null) throw new IllegalArgumentException("template is null")
+    	if (extract == null) throw new IllegalArgumentException("extract is null")
+    	if (dest == null) throw new IllegalArgumentException("dest is null")
         mappings.put(inputEventHasher.apply(template), new Mapping<E, R>(template, extract, dest))
     }
 
