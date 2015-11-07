@@ -27,7 +27,7 @@ class InputMapperTest {
         var Observer<Float> observer = mock(typeof(Observer))
         // 2. map InputEvents --to--> actions (setup InputMapper's mappings)
         sut.mappings.clear()
-        sut.map(tmplKeyInputEvent(KeyInput::KEY_0), [InputMapperHelpers::isPressedAsOne(it)], observer) // 3. simulate events
+        sut.map(tmplKeyInputEvent(KeyInput::KEY_0), InputMapperHelpers.isPressedAsOne, observer) // 3. simulate events
         sut.onEvent(new KeyInputEvent(KeyInput::KEY_0, Character.valueOf('0').charValue, true, false))
         sut.onEvent(new KeyInputEvent(KeyInput::KEY_0, Character.valueOf('0').charValue, false, false)) // 4. check
         var InOrder inOrder1 = inOrder(observer)
@@ -41,7 +41,7 @@ class InputMapperTest {
         var Subject<Float, Float> actionf0 = PublishSubject::create()
         // 2. map InputEvents --to--> actions (setup InputMapper's mappings)
         sut.mappings.clear()
-        sut.map(tmplKeyInputEvent(KeyInput::KEY_0), [InputMapperHelpers::isPressedAsOne(it)], actionf0) // 3. map actions --to--> subscribe listener/observer
+        sut.map(tmplKeyInputEvent(KeyInput::KEY_0), InputMapperHelpers.isPressedAsOne, actionf0) // 3. map actions --to--> subscribe listener/observer
         /*FIXME Cannot add Annotation to Variable declaration. Java code: @SuppressWarnings("unchecked")*/
         var Observer<Float> observer = mock(typeof(Observer))
         actionf0.subscribe(observer)
