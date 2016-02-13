@@ -12,7 +12,6 @@ import com.jme3x.jfx.cursor.ICursorDisplayProvider
 import com.jme3x.jfx.cursor.proton.ProtonCursorProvider
 import dagger.Module
 import dagger.Provides
-import java.util.concurrent.Future
 
 @Module()
 class JmeModule {

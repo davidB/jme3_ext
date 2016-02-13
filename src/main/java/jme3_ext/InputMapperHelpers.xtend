@@ -17,7 +17,6 @@ import java.util.Locale
 import rx.Observable
 import rx.Observer
 import rx.Subscription
-import java.util.function.Function
 
 /** 
  * A collection of functions, mainly to simplify usage of InputMapper.
@@ -104,7 +103,7 @@ class InputMapperHelpers {
     /** 
      * Convert KeyInputEvent into -1.0f when isPressed(), -0.5f when isRepeating, else 0.0f.
      */
-    static val isPressedNegOneAndHalf = [KeyInputEvent evt|
+    public static val isPressedNegOneAndHalf = [KeyInputEvent evt|
         if(evt.isPressed()) -1.0f else if(evt.isRepeating()) -0.5f else 0.0f
     ]
 
