@@ -65,12 +65,14 @@ task copyDeps {
 
 task sourcesJar(type: Jar) {
 	from sourceSets.main.allSource
+	exclude 'Textures/**'
 	classifier = 'sources'
 }
 
-task mainJar(type: Jar) {
+task noTexturesJar(type: Jar) {
 	from sourceSets.main.output
 	exclude 'Textures/**'
+	classifier = 'notextures'
 }
 
 task texturesJar(type: Jar) {
@@ -94,14 +96,21 @@ def pomConfig = {
 		}
 	}
 }
-
+afterEvaluate { project ->
 publishing {
 	publications {
 		mavenStuff(MavenPublication) {
-			//from components.java
-			artifact mainJar
+			from components.java
 			artifact sourcesJar
+			artifact noTexturesJar
 			artifact texturesJar
+			artifacts.all ({
+			 if (it.extension == 'jar' && it.classifier == null) {
+				it.classifier = 'all'
+			 } else if (it.extension == 'jar' && it.classifier == 'notextures') {
+				it.classifier = null
+			 }
+			})
 			pom.withXml {
 				def root = asNode()
 				if (description) root.appendNode('description', project.description)
@@ -109,4 +118,5 @@ publishing {
 			}
 		}
 	}
+}
 }
