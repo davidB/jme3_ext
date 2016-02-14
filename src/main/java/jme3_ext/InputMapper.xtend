@@ -3,7 +3,6 @@ package jme3_ext
 
 import java.util.Map
 import java.util.TreeMap
-import java.util.function.Function
 import rx.Observable
 import rx.Observer
 import rx.subjects.PublishSubject
@@ -13,6 +12,7 @@ import com.jme3.input.event.JoyAxisEvent
 import org.eclipse.xtend.lib.annotations.Data
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import javax.inject.Inject
+import org.eclipse.xtext.xbase.lib.Functions.Function1
 
 /** 
  * InputMapper allow to store mapping rule between an InputEvent (template) and an Observer.
@@ -29,7 +29,7 @@ final class InputMapper {
     @Data
     static class Mapping<E extends InputEvent, R> {
         public final E template
-        public final Function<E, R> extract
+        public final Function1<E, R> extract
         public final Observer<R> dest
 
         // the function is place as member of Entry to simplify type notation and checking
@@ -54,7 +54,7 @@ final class InputMapper {
      * Convert an InputEvent into an Integer.
      * Used to compare two InputEvent (the template and the incoming)
      */
-    public final Function<InputEvent, Integer> inputEventHasher
+    public final Function1<InputEvent, Integer> inputEventHasher
     
     final PublishSubject<InputEvent> last0 = PublishSubject::create()
     /** 
@@ -87,7 +87,7 @@ final class InputMapper {
      * @param extract the extractor/converter from future matching InputEvent to value to push to dest.
      * @param dest the destination.
      */
-    def <E extends InputEvent, R> void map(E template, Function<E, R> extract, Observer<R> dest) {
+    def <E extends InputEvent, R> void map(E template, Function1<E, R> extract, Observer<R> dest) {
     	if (template == null) throw new IllegalArgumentException("template is null")
     	if (extract == null) throw new IllegalArgumentException("extract is null")
     	if (dest == null) throw new IllegalArgumentException("dest is null")
