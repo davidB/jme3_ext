@@ -1,6 +1,6 @@
 plugins {
 	id "nebula.provided-base" version "3.0.3"
-	id "org.xtext.xtend" version "1.0.3"
+	id "org.xtext.xtend" version "1.0.4"
 	id "net.ltgt.apt" version "0.5"
 	id "java"
 	id "eclipse"
@@ -9,6 +9,10 @@ plugins {
 
 version = "git describe --always --dirty".execute().text.trim()
 println("version : '${version}'")
+group = "com.github.davidb"
+def description = "A library to host various jme functions, helpers, ..."
+def v_jme = "3.1.0-alpha5"
+def v_slf4j = "1.7.7"
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -44,20 +48,6 @@ dependencies {
 	
 	testCompile "org.jmonkeyengine:jme3-lwjgl:${v_jme}"
 	testCompile "org.jmonkeyengine:jme3-jogl:${v_jme}"
-}
-
-//------------------------------------------------------------------------------
-
-task copyDeps {
-	description 'copy runtime + testRuntime dependencies into lib/ dir to allow other tools (jme3-SDK, eclipse apt-processor) to use libs'
-  copy {
-    from configurations.runtime
-    into 'lib/main'
-  }
-  copy {
-    from (configurations.testRuntime - configurations.runtime)
-    into 'lib/test'
-  }
 }
 
 //------------------------------------------------------------------------------
